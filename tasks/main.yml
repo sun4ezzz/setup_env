@@ -1,2 +1,24 @@
 ---
 # tasks file for .
+- name: Install DBA packages
+  yum:
+    name: "{{ pg_dba_packages }}"
+    state: present
+  tags: yum  
+
+- name: Copy bash profile
+  template:
+    src: bash_profile.j2
+    dest: "{{ item.path }}/.bash_profile"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0600
+  loop: "{{ dba_users }}"
+  tags: bash_profile
+
+- name: Clone git
+  git:
+    repo: 'https://github.com/NikolayS/postgres_dba.git'
+    dest: "{{ item.path }}"
+  loop: "{{ dba_users }}"
+  tags: git  
