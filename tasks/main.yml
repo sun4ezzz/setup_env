@@ -1,2 +1,45 @@
 ---
 # tasks file for .
+- name: Install DBA packages
+  yum:
+    name: "{{ pg_dba_packages }}"
+    state: present
+  tags: yum  
+
+- name: Clone postgres_dba repo
+  git:
+    repo: 'https://github.com/NikolayS/postgres_dba.git'
+    dest: "{{ item.path }}/postgres_dba"
+  loop: "{{ dba_users }}"
+  tags: git
+
+- name: Set correct right to postgres_dba
+  file: 
+    path: "{{ item.path }}/postgres_dba"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    recurse: yes
+  loop: "{{ dba_users }}"
+  tags: git
+
+- name: Configure bash profile
+  template:
+    src: bash_profile.j2
+    dest: "{{ item.path }}/.bash_profile"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0600
+  loop: "{{ dba_users }}"
+  tags: bash_profile
+
+- name: Configure psqlrc
+  template:
+    src: psqlrc.j2
+    dest: "{{ item.path }}/.psqlrc"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0600
+  loop: "{{ dba_users }}"
+  tags: psqlrc
+
+

@@ -1,2 +1,9 @@
 ---
 # vars file for .
+dba_users:
+  - name: 'alex'
+    path: '/home/alex'
+
+pg_dba_packages:
+  - pspg
+  - git     

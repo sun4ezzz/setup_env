@@ -1,0 +1,12 @@
+{% raw %}
+\set PROMPT1 '%[%033[33;40m%][%`date +"%d/%m/%Y %H:%M %Z"`]%[%033[0m%]% %M %[%033[32;40m%]%n@%/%R%#%x%[%033[0m%]% '
+\set PROMPT2 '%[%033[32;40m%]%n@%/%R%#%[%033[0m%]% '
+\set dba '\\i ~/postgres_dba/start.psql'
+\x auto
+\timing
+\set VERBOSITY verbose
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTCONTROL ignoredups
+\set COMP_KEYWORD_CASE upper
+\unset QUIET
+{% endraw %}
